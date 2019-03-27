@@ -27,7 +27,7 @@ Go offers struct tags which are discoverable via reflection. These enjoy a wide 
 *Libraries*
 
   go get gopkg.in/go-playground/validator.v9
-  go get github.com/go-playground/validator
+  go get github.com/asaskevich/govalidator
   go get github.com/go-validator/validator
 
 * Example
