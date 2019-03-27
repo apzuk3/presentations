@@ -1,0 +1,78 @@
+Input validation in GoLang
+Existing Practices and Libraries
+Tags: Golang, Validation
+
+Aram Petrosyan
+Software Engineer, Paddle.com
+aram@paddle.com
+@apzuk3
+
+* Input validation in GoLang
+
+.image assets/gopher.png
+
+* A junior Gopher approach  🎉
+
+.code code/junior_approach.go
+
+*Pros:* Fast, easy and cheesy
+*Cons:* Not reusable, not flexible, does not scale well
+
+* Idiomatic way to Go!
+
+Go offers struct tags which are discoverable via reflection. These enjoy a wide range of use in the standard library in the JSON/XML and other encoding packages
+
+.code code/idiomatic_way.go
+
+*Libraries*
+
+  go get gopkg.in/go-playground/validator.v9
+  go get github.com/go-playground/validator
+  go get github.com/go-validator/validator
+
+* Example
+
+.play code/playground.go
+
+  Key: 'CreateRequest.Title' Error:Field validation for 'Title' failed on the 'required' tag
+  Key: 'CreateRequest.Body' Error:Field validation for 'Body' failed on the 'required' tag
+
+* Custom validation rules
+
+.code code/customise.go
+
+* Custom validation error messages
+
+.code code/customise_msg.go
+
+The error message would look like "Field is a required field"
+
+* Yet another approach 👀
+
+  go get github.com/go-ozzo/ozzo-validation
+
+.play code/yet_another_approach.go
+
+* Do not make a mess 💩
+
+- Initialise it in one place
+- Keep it in internal package
+     ---project
+     -----cmd
+     -------server
+     ---------main.go   <-- create an instance here and pass all the way down as a dependency
+     -------lambda
+     ---------my_func
+     -----------main.go   <-- create an instance here and do all validations here
+     -----article
+     -------handler.go   <-- Do all validation here and keep service clean (can also be created here)
+     -------service.go   <-- Service will just do the business logic
+     -------repository.go
+     -----internal
+     -------validator
+     ---------validate.go   <--- Register all custom rules, messages, translations here
+- Keep domain entities clean of rules
+
+* Handler example
+
+.play code/handler.go
